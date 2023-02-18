@@ -19,11 +19,21 @@ jobs:
     steps:
       - checkout
       - gcp-gcr/gcr-auth
+      - gcp-gcr/build-image:
+          image: backstage
+          tag: '${CIRCLE_SHA1}'
+          registry-url: asia.gcr.io
+      - gcp-gcr/push-image:
+          image: backstage
+          tag: '${CIRCLE_SHA1}'
+          registry-url: asia.gcr.io
 
 workflows:
   build-and-deploy:
     jobs:
       - build
       - deploy:
-          requires:
-            - build
+          filters:
+            branches:
+              only:
+                - master
