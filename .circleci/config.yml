@@ -19,14 +19,12 @@ jobs:
     steps:
       - checkout
       - gcp-gcr/gcr-auth
-      - gcp-gcr/build-image:
-          image: backstage
-          tag: '${CIRCLE_SHA1}'
-          registry-url: asia.gcr.io
-      - gcp-gcr/push-image:
-          image: backstage
-          tag: '${CIRCLE_SHA1}'
-          registry-url: asia.gcr.io
+      - run:
+          name: Build and push image to GCP Artifact Registry
+          command: | 
+            docker image build -t backstage .
+            docker tag backstage asia-northeast1-docker.pkg.dev/circleci-tadashi/backstage/app:${CIRCLE_SHA1}
+            docker push asia-northeast1-docker.pkg.dev/circleci-tadashi/backstage/app:${CIRCLE_SHA1}
 
 workflows:
   build-and-deploy:
