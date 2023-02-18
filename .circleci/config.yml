@@ -18,13 +18,16 @@ jobs:
       docker_layer_caching: true
     steps:
       - checkout
+      - node/install-packages:
+          pkg-manager: yarn
+      - run: yarn build:backend
       - gcp-gcr/gcr-auth
       - run:
           name: Build and push image to GCP Artifact Registry
           command: | 
-            docker image build -t backstage .
-            docker tag backstage asia-northeast1-docker.pkg.dev/circleci-tadashi/backstage/app:${CIRCLE_SHA1}
-            docker push asia-northeast1-docker.pkg.dev/circleci-tadashi/backstage/app:${CIRCLE_SHA1}
+            docker image build . -f packages/backend/Dockerfile --tag backstage
+            # docker tag backstage asia-northeast1-docker.pkg.dev/circleci-tadashi/backstage/app:${CIRCLE_SHA1}
+            # docker push asia-northeast1-docker.pkg.dev/circleci-tadashi/backstage/app:${CIRCLE_SHA1}
 
 workflows:
   build-and-deploy:
