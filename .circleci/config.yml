@@ -15,6 +15,7 @@ jobs:
 
   deploy:
     machine:
+      image: ubuntu-2204:2022.10.1
       docker_layer_caching: true
     steps:
       - checkout
