@@ -14,19 +14,19 @@ jobs:
       - run: yarn build:backend
 
   deploy:
-    executor: node/default
+    machine:
+      image: ubuntu-2204:2022.10.1
+      docker_layer_caching: true
     steps:
       - checkout
       - node/install-packages:
           pkg-manager: yarn
       - run: yarn build:backend
-      - setup_remote_docker:
-          version: 20.10.14
-          docker_layer_caching: true
       - gcp-gcr/gcr-auth
       - run:
           name: Build and push image to GCP Artifact Registry
           command: | 
+            export DOCKER_BUILDKIT=1
             docker image build . -f packages/backend/Dockerfile --tag backstage
             # docker tag backstage asia-northeast1-docker.pkg.dev/circleci-tadashi/backstage/app:${CIRCLE_SHA1}
             # docker push asia-northeast1-docker.pkg.dev/circleci-tadashi/backstage/app:${CIRCLE_SHA1}
