@@ -28,6 +28,12 @@ jobs:
             docker image build -t backstage .
             docker tag backstage asia-northeast1-docker.pkg.dev/circleci-tadashi/backstage/app:${CIRCLE_SHA1}
             docker push asia-northeast1-docker.pkg.dev/circleci-tadashi/backstage/app:${CIRCLE_SHA1}
+      # - run:
+      #     name: Deploy to Google Cloud run
+      #     command: >-
+      #       gcloud run deploy backstage
+      #       --platform=managed --region=asia-northeast1 --allow-unauthenticated
+      #       --image=asia.gcr.io/${GOOGLE_PROJECT_ID}/first-circleci-demo:${CIRCLE_SHA1}
 
 workflows:
   build-and-deploy:
