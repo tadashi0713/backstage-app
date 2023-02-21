@@ -30,8 +30,7 @@ backend:
   database:
     client: pg
     connection:
-      # host: ${POSTGRES_HOST}
-      socketPath: '/cloudsql/circleci-tadashi:asia-northeast1:backstage-db'
+      host: ${POSTGRES_HOST}
       port: ${POSTGRES_PORT}
       user: ${POSTGRES_USER}
       password: ${POSTGRES_PASSWORD}
