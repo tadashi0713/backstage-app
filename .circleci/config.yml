@@ -5,17 +5,17 @@ orbs:
   gcp-cli: circleci/gcp-cli@3.0.1
 
 jobs:
-  build:
+  build_and_test:
     executor: node/default
     steps:
       - checkout
       - node/install-packages:
           pkg-manager: yarn
-      - run: yarn build:all
-      - run: yarn test:all
+      - run: yarn tsc
       - run: yarn lint:all
-      - run: yarn tsc:full
       - run: yarn prettier:check
+      - run: yarn test:all
+      - run: yarn build:all
 
   deploy:
     machine:
@@ -26,7 +26,7 @@ jobs:
       - gcp-cli/setup
       - run:
           name: Build and push image to GCP Artifact Registry
-          command: | 
+          command: |
             export DOCKER_BUILDKIT=1
             gcloud auth configure-docker asia-northeast1-docker.pkg.dev
             docker image build -t backstage .
@@ -42,7 +42,7 @@ jobs:
 workflows:
   build-and-deploy:
     jobs:
-      - build
+      - build_and_test
       - deploy:
           filters:
             branches:
