@@ -11,7 +11,11 @@ jobs:
       - checkout
       - node/install-packages:
           pkg-manager: yarn
-      - run: yarn build:backend
+      - run: yarn build:all
+      - run: yarn test:all
+      - run: yarn lint:all
+      - run: yarn tsc:full
+      - run: yarn prettier:check
 
   deploy:
     machine:
