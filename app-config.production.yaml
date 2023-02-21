@@ -23,3 +23,8 @@ techdocs:
     runIn: 'docker' # Alternatives - 'local'
   publisher:
     type: 'local' # Alternatives - 'googleGcs' or 'awsS3'. Read documentation for using alternatives.
+
+integrations:
+  github:
+    - host: github.com
+      token: ${GITHUB_TOKEN}
