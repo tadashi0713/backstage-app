@@ -28,3 +28,6 @@ integrations:
   github:
     - host: github.com
       token: ${GITHUB_TOKEN}
+      apps:
+        - $include: github-app-backstage-tadashi0713-credentials.yaml
+
